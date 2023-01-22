@@ -1,0 +1,28 @@
+/*
+ * fan_controller.c
+ *
+ *  Created on: Oct 8, 2022
+ *      Author: Mahmoud Qotp
+ */
+
+
+#include "adc.h"
+#include "gpio.h"
+#include "lcd.h"
+#include "lm35_sensor.h"
+#include "dc_motor.h"
+
+
+int main(void)
+{
+	ADC_ConfigType configuration = {INTERNAL,F_CPU_8};
+	ADC_init(&configuration);
+	LCD_init();
+	DcMotor_Init();
+	LCD_displayStringRowColumn(0,4,"FAN is ");
+	LCD_displayStringRowColumn(1,4,"Temp =    C");
+	while(1)
+	{
+
+	}
+}

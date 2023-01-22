@@ -1,0 +1,29 @@
+/*
+ * dc_motor.c
+ *
+ *  Created on: Oct 8, 2022
+ *      Author: Mahmoud Qotp
+ */
+
+
+#include "dc_motor.h"
+#include "gpio.h"
+#include "std_types.h"
+
+/**
+ * This Function should set the direction for the two input pins of the DC motor, using GPIO Driver
+ *
+ * **/
+void DcMotor_Init(void){
+	/** setup the direction for the two motor pins through the GPIO driver. **/
+	GPIO_setupPinDirection(DC_MOTOR_PIN0_PORT,DC_MOTOR_PIN0,PIN_OUTPUT);
+	GPIO_setupPinDirection(DC_MOTOR_PIN1_PORT,DC_MOTOR_PIN1,PIN_OUTPUT);
+	/** Stop at the DC-Motor at the beginning through the GPIO driver. **/
+	GPIO_writePin(DC_MOTOR_PIN0_PORT,DC_MOTOR_PIN0,LOGIC_HIGH);
+	GPIO_writePin(DC_MOTOR_PIN1_PORT,DC_MOTOR_PIN1,LOGIC_HIGH);
+}
+
+
+void DcMotor_Rotate(DcMotor_State state,uint8 speed){
+
+}

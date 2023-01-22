@@ -1,0 +1,106 @@
+/*
+ * fan_controller.c
+ *
+ *  Created on: Oct 8, 2022
+ *
+ *      Author: Mahmoud Qotp
+ *
+ *     Project: Mini Project 3 - Fan Controller
+ *
+ * Description: The aim of this project is to design a temperature-controlled fan, using ATmega32
+ * 				microcontroller, in which the fan is automatically turned ON or OFF according to
+ * 				the temperature.
+ *
+ * 				In this project, the LM35 temperature sensor will give continuous analog output
+ * 				corresponding to the temperature sensed by it. This analog signal is given to
+ * 				the ADC, which converts the analog values to digital values.
+ *
+ * 				The digital output of the ADC is equivalent to sensed analog voltage.
+ *
+ * 				The microcontroller will continuously monitor the temperature and based on the
+ * 				temperature value.
+ */
+
+
+#include "lcd.h"
+#include "lm35_sensor.h"
+#include "dc_motor.h"
+#include "std_types.h"
+#include "adc.h"
+
+int main(void)
+{
+	uint8 temperature; /* Variable to take the return of LM35_getTemperature function */
+	/*Initializing ADC peripheral to Internal (2.56) reference voltage and F_CPU/8 Prescaler*/
+	ADC_ConfigType configuration = {INTERNAL,F_CPU_8};
+	ADC_init(&configuration);
+	LCD_init(); 	/*Initializing LCD*/
+	DcMotor_Init(); /*Initializing DC Motor*/
+	/*Display the state of the fan and the temperature without looping.*/
+	LCD_displayStringRowColumn(0,4,"FAN is ");
+	LCD_displayStringRowColumn(1,3,"Temp =     C");
+	while(1)
+	{
+		temperature = LM35_getTemperature();
+		/*All cases display the temperature, just to avoid dummy loopy explaining :D*/
+
+		/*In case of temperature is less than 30C, Turn off the fan.*/
+		if (temperature < 30)
+		{
+			LCD_moveCursor(1,10);
+			LCD_intgerToString(temperature);
+			LCD_displayCharacter(' ');
+			DcMotor_Rotate(STOP,DC_MOTOR_OFF);
+			LCD_displayStringRowColumn(0,11,"OFF");
+		}
+
+		/*In case of (30 <= temperature < 60), Turn ON the fan with 25% of its maximum speed.*/
+		else if (temperature < 60)
+		{
+			LCD_moveCursor(1,10);
+			LCD_intgerToString(temperature);
+			LCD_displayCharacter(' ');
+			DcMotor_Rotate(CW,DC_MOTOR_QUARTER_SPEED);
+			LCD_displayStringRowColumn(0,11,"ON ");
+		}
+
+		/*In case of (60 <= temperature < 90), Turn ON the fan with 50% of its maximum speed.*/
+		else if (temperature < 90)
+		{
+			LCD_moveCursor(1,10);
+			LCD_intgerToString(temperature);
+			LCD_displayCharacter(' ');
+			DcMotor_Rotate(CW,DC_MOTOR_HALF_SPEED);
+			LCD_displayStringRowColumn(0,11,"ON ");
+		}
+
+		/*In case of (90 <= temperature < 120), Turn ON the fan with 75% of its maximum speed.*/
+		else if (temperature < 120)
+		{
+			if(temperature < 100)
+			{
+				LCD_moveCursor(1,10);
+				LCD_intgerToString(temperature);
+				LCD_displayCharacter(' ');
+			}
+			else
+			{
+				LCD_moveCursor(1,10);
+				LCD_intgerToString(temperature);
+			}
+			DcMotor_Rotate(CW,DC_MOTOR_THREE_QUARTERS_SPEED);
+			LCD_displayStringRowColumn(0,11,"ON ");
+
+		}
+
+		/*In case of (120 <= temperature), Turn ON the fan with 25% of its maximum speed.*/
+		else if (temperature >= 120)
+		{
+			LCD_moveCursor(1,7);
+			LCD_intgerToString(temperature);
+			DcMotor_Rotate(CW,DC_MOTOR_FULL_SPEED);
+			LCD_displayStringRowColumn(0,11,"ON ");
+
+		}
+	}
+}

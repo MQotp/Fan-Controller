@@ -1,0 +1,18 @@
+/*
+ * dc_motor.h
+ *
+ *  Created on: Oct 8, 2022
+ *      Author: Mahmoud Qotp
+ */
+
+#ifndef DC_MOTOR_H_
+#define DC_MOTOR_H_
+
+#define DC_MOTOR_PIN0_PORT PORTB_ID
+#define DC_MOTOR_PIN1_PORT PORTB_ID
+
+typedef enum{
+	STOP, CW, ACW
+}DcMotor_State;
+
+#endif /* DC_MOTOR_H_ */

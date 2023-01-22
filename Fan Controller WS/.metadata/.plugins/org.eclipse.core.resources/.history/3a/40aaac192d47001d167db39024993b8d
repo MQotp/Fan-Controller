@@ -1,0 +1,18 @@
+/*
+ * dc_motor.c
+ *
+ *  Created on: Oct 8, 2022
+ *      Author: Mahmoud Qotp
+ */
+
+
+#include "dc_motor.h"
+#include "gpio.h"
+void DcMotor_Init(void){
+
+}
+
+
+void DcMotor_Rotate(DcMotor_State state,uint8 speed){
+
+}

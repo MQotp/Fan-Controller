@@ -1,0 +1,41 @@
+/*
+ * dc_motor.h
+ *
+ *  Created on: Oct 8, 2022
+ *      Author: Mahmoud Qotp
+ */
+
+#ifndef DC_MOTOR_H_
+#define DC_MOTOR_H_
+#include "gpio.h"
+
+/*******************************************************************************
+ *                                Definitions                                  *
+ *******************************************************************************/
+#define DC_MOTOR_PORT PORTB_ID
+
+#define DC_MOTOR_PIN0 PIN0_ID
+#define DC_MOTOR_PIN1 PIN1_ID
+
+#define DC_MOTOR_OFF 0
+#define DC_MOTOR_QUARTER_SPEED 25
+#define DC_MOTOR_HALF_SPEED 50
+#define DC_MOTOR_THREE_QUARTERS_SPEED 75
+#define DC_MOTOR_FULL_SPEED 100
+
+/*******************************************************************************
+ *                               Types Declaration                             *
+ *******************************************************************************/
+
+typedef enum{
+	STOP, CW, ACW
+}DcMotor_State;
+
+
+/*******************************************************************************
+ *                              Functions Prototypes                           *
+ *******************************************************************************/
+void DcMotor_Init(void);
+void DcMotor_Rotate(DcMotor_State state,uint8 speed);
+
+#endif /* DC_MOTOR_H_ */

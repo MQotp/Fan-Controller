@@ -1,0 +1,14 @@
+/*
+ * timer0_pwm.h
+ *
+ *  Created on: Oct 8, 2022
+ *      Author: Mahmoud Qotp
+ */
+
+#ifndef TIMER0_PWM_H_
+#define TIMER0_PWM_H_
+
+#define TIMER0_MAX 255
+void Timer0_PWM_Init(unsigned char set_duty_cycle);
+
+#endif /* TIMER0_PWM_H_ */

@@ -1,0 +1,43 @@
+/*
+ * dc_motor.c
+ *
+ *  Created on: Oct 8, 2022
+ *      Author: Mahmoud Qotp
+ */
+
+
+#include "dc_motor.h"
+#include "gpio.h"
+#include "std_types.h"
+#include "common_macros.h"
+#include "timer0_pwm.h"
+
+/*This Function should set the direction for the two input pins of the DC motor, using GPIO Driver*/
+void DcMotor_Init(void){
+	/*setup the direction for the two motor pins through the GPIO driver.*/
+	GPIO_setupPinDirection(DC_MOTOR_PORT,DC_MOTOR_PIN0,PIN_OUTPUT);
+	GPIO_setupPinDirection(DC_MOTOR_PORT,DC_MOTOR_PIN1,PIN_OUTPUT);
+	/*Stop at the DC-Motor at the beginning through the GPIO driver.*/
+	GPIO_writePin(DC_MOTOR_PORT,DC_MOTOR_PIN0,LOGIC_LOW);
+	GPIO_writePin(DC_MOTOR_PORT,DC_MOTOR_PIN1,LOGIC_LOW);
+}
+
+
+void DcMotor_Rotate(DcMotor_State state,uint8 speed){
+	switch (state) {
+	case CW:
+		GPIO_writePin(DC_MOTOR_PORT,DC_MOTOR_PIN0,LOGIC_HIGH);
+		GPIO_writePin(DC_MOTOR_PORT,DC_MOTOR_PIN1,LOGIC_LOW);
+		break;
+	case ACW:
+		SET_BIT(DC_MOTOR_AVR_PORT,DC_MOTOR_PIN1);
+		CLEAR_BIT(DC_MOTOR_AVR_PORT,DC_MOTOR_PIN0);
+		break;
+		/* Default made to be 00 ( STOP ). */
+	default:
+		CLEAR_BIT(DC_MOTOR_AVR_PORT,DC_MOTOR_PIN0);
+		CLEAR_BIT(DC_MOTOR_AVR_PORT,DC_MOTOR_PIN1);
+	}
+
+	Timer0_PWM_Init(speed);
+}
